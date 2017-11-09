@@ -48,12 +48,12 @@ object NetworkUtils {
     /* The number of days we want our API to return */
     private val numDays = 14
 
-    internal val QUERY_PARAM = "q"
-    internal val LAT_PARAM = "lat"
-    internal val LON_PARAM = "lon"
-    internal val FORMAT_PARAM = "mode"
-    internal val UNITS_PARAM = "units"
-    internal val DAYS_PARAM = "cnt"
+    val QUERY_PARAM = "q"
+    val LAT_PARAM = "lat"
+    val LON_PARAM = "lon"
+    val FORMAT_PARAM = "mode"
+    val UNITS_PARAM = "units"
+    val DAYS_PARAM = "cnt"
 
     /**
      * Builds the URL used to talk to the weather server using a location. This location is based
@@ -75,7 +75,7 @@ object NetworkUtils {
      * @param lon The longitude of the location
      * @return The Url to use to query the weather server.
      */
-    fun buildUrl(lat: Double?, lon: Double?): URL? {
+    fun buildUrl(lat: Double, lon: Double): URL? {
         /** This will be implemented in a future lesson  */
         return null
     }
@@ -91,9 +91,9 @@ object NetworkUtils {
     fun getResponseFromHttpUrl(url: URL): String? {
         val urlConnection = url.openConnection() as HttpURLConnection
         try {
-            val `in` = urlConnection.inputStream
+            val inputStream = urlConnection.inputStream
 
-            val scanner = Scanner(`in`)
+            val scanner = Scanner(inputStream)
             scanner.useDelimiter("\\A")
 
             val hasInput = scanner.hasNext()

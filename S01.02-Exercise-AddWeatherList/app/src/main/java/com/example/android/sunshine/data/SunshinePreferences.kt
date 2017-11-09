@@ -36,9 +36,8 @@ object SunshinePreferences {
      * Before you implement methods to return your REAL preference for location,
      * we provide some default values to work with.
      */
-    private
-            /** This will be implemented in a future lesson  */
-    val defaultWeatherLocation = "94043,USA"
+    /** This will be implemented in a future lesson  */
+    private val defaultWeatherLocation = "94043,USA"
     /** This will be implemented in a future lesson  */
     val defaultWeatherCoordinates = doubleArrayOf(37.4284, 122.0724)
 

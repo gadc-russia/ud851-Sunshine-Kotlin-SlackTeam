@@ -63,7 +63,7 @@ object OpenWeatherJsonUtils {
         val OWM_MESSAGE_CODE = "cod"
 
         /* String array to hold each day's weather String */
-        var parsedWeatherData: Array<String?>
+        val parsedWeatherData: Array<String?>
 
         val forecastJson = JSONObject(forecastJsonStr)
 
