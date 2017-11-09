@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.utilities;
+package com.example.android.sunshine.utilities
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Scanner;
+import java.io.IOException
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.Scanner
 
 /**
  * These utilities will be used to communicate with the weather servers.
  */
-public final class NetworkUtils {
+object NetworkUtils {
 
-    private static final String TAG = NetworkUtils.class.getSimpleName();
+    private val TAG = NetworkUtils::class.simpleName
 
-    private static final String DYNAMIC_WEATHER_URL =
-            "https://andfun-weather.udacity.com/weather";
+    private val DYNAMIC_WEATHER_URL = "https://andfun-weather.udacity.com/weather"
 
-    private static final String STATIC_WEATHER_URL =
-            "https://andfun-weather.udacity.com/staticweather";
+    private val STATIC_WEATHER_URL = "https://andfun-weather.udacity.com/staticweather"
 
-    private static final String FORECAST_BASE_URL = STATIC_WEATHER_URL;
+    private val FORECAST_BASE_URL = STATIC_WEATHER_URL
 
     /*
      * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
@@ -44,18 +42,18 @@ public final class NetworkUtils {
      */
 
     /* The format we want our API to return */
-    private static final String format = "json";
+    private val format = "json"
     /* The units we want our API to return */
-    private static final String units = "metric";
+    private val units = "metric"
     /* The number of days we want our API to return */
-    private static final int numDays = 14;
+    private val numDays = 14
 
-    final static String QUERY_PARAM = "q";
-    final static String LAT_PARAM = "lat";
-    final static String LON_PARAM = "lon";
-    final static String FORMAT_PARAM = "mode";
-    final static String UNITS_PARAM = "units";
-    final static String DAYS_PARAM = "cnt";
+    val QUERY_PARAM = "q"
+    val LAT_PARAM = "lat"
+    val LON_PARAM = "lon"
+    val FORMAT_PARAM = "mode"
+    val UNITS_PARAM = "units"
+    val DAYS_PARAM = "cnt"
 
     /**
      * Builds the URL used to talk to the weather server using a location. This location is based
@@ -64,9 +62,9 @@ public final class NetworkUtils {
      * @param locationQuery The location that will be queried for.
      * @return The URL to use to query the weather server.
      */
-    public static URL buildUrl(String locationQuery) {
-        /** This will be implemented in a future lesson **/
-        return null;
+    fun buildUrl(locationQuery: String): URL? {
+        /** This will be implemented in a future lesson  */
+        return null
     }
 
     /**
@@ -77,9 +75,9 @@ public final class NetworkUtils {
      * @param lon The longitude of the location
      * @return The Url to use to query the weather server.
      */
-    public static URL buildUrl(Double lat, Double lon) {
-        /** This will be implemented in a future lesson **/
-        return null;
+    fun buildUrl(lat: Double, lon: Double): URL? {
+        /** This will be implemented in a future lesson  */
+        return null
     }
 
     /**
@@ -89,22 +87,23 @@ public final class NetworkUtils {
      * @return The contents of the HTTP response.
      * @throws IOException Related to network and stream reading
      */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+    fun getResponseFromHttpUrl(url: URL): String? {
+        val urlConnection = url.openConnection() as HttpURLConnection
         try {
-            InputStream in = urlConnection.getInputStream();
+            val inputStream = urlConnection.inputStream
 
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
+            val scanner = Scanner(inputStream)
+            scanner.useDelimiter("\\A")
 
-            boolean hasInput = scanner.hasNext();
-            if (hasInput) {
-                return scanner.next();
+            val hasInput = scanner.hasNext()
+            return if (hasInput) {
+                scanner.next()
             } else {
-                return null;
+                null
             }
         } finally {
-            urlConnection.disconnect();
+            urlConnection.disconnect()
         }
     }
 }
