@@ -37,9 +37,9 @@ object SunshinePreferences {
      * we provide some default values to work with.
      */
     /** This will be implemented in a future lesson  */
-    private val defaultWeatherLocation = "94043,USA"
+    private val DEFAULT_WEATHER_LOCATION  = "94043,USA"
     /** This will be implemented in a future lesson  */
-    val defaultWeatherCoordinates = doubleArrayOf(37.4284, 122.0724)
+    private val DEFAULT_WEATHER_COORDINATES  = doubleArrayOf(37.4284, 122.0724)
 
     private val DEFAULT_MAP_LOCATION = "1600 Amphitheatre Parkway, Mountain View, CA 94043"
 
@@ -89,7 +89,7 @@ object SunshinePreferences {
      */
     fun getPreferredWeatherLocation(context: Context): String {
         /** This will be implemented in a future lesson  */
-        return defaultWeatherLocation
+        return getDefaultWeatherLocation()
     }
 
     /**
@@ -112,7 +112,7 @@ object SunshinePreferences {
      * @return An array containing the two coordinate values.
      */
     fun getLocationCoordinates(context: Context): DoubleArray {
-        return defaultWeatherCoordinates
+        return getDefaultWeatherCoordinates()
     }
 
     /**
@@ -125,5 +125,15 @@ object SunshinePreferences {
     fun isLocationLatLonAvailable(context: Context): Boolean {
         /** This will be implemented in a future lesson  */
         return false
+    }
+
+    private fun getDefaultWeatherLocation(): String {
+        /** This will be implemented in a future lesson  */
+        return DEFAULT_WEATHER_LOCATION
+    }
+
+    fun getDefaultWeatherCoordinates(): DoubleArray {
+        /** This will be implemented in a future lesson  */
+        return DEFAULT_WEATHER_COORDINATES
     }
 }
