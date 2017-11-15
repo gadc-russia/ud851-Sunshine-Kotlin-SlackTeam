@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.utilities;
+package com.example.android.sunshine.utilities
 
-import android.content.Context;
-import android.text.format.DateUtils;
+import android.content.Context
+import android.text.format.DateUtils
 
-import com.example.android.sunshine.R;
+import com.example.android.sunshine.R
 
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat
+import java.util.TimeZone
+import java.util.concurrent.TimeUnit
 
 /**
  * Class for handling date conversions that are useful for Sunshine.
  */
-public final class SunshineDateUtils {
+object SunshineDateUtils {
 
     /* Milliseconds in a day */
-    public static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
+    val DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1)
 
     /**
      * This method returns the number of milliseconds (UTC time) for today's date at midnight in
@@ -55,46 +55,35 @@ public final class SunshineDateUtils {
      * @return The number of milliseconds (UTC / GMT) for today's date at midnight in the local
      * time zone
      */
-    public static long getNormalizedUtcDateForToday() {
-
-        /*
+    /*
          * This number represents the number of milliseconds that have elapsed since January
          * 1st, 1970 at midnight in the GMT time zone.
-         */
-        long utcNowMillis = System.currentTimeMillis();
-
-        /*
+         *//*
          * This TimeZone represents the device's current time zone. It provides us with a means
          * of acquiring the offset for local time from a UTC time stamp.
-         */
-        TimeZone currentTimeZone = TimeZone.getDefault();
-
-        /*
+         *//*
          * The getOffset method returns the number of milliseconds to add to UTC time to get the
          * elapsed time since the epoch for our current time zone. We pass the current UTC time
          * into this method so it can determine changes to account for daylight savings time.
-         */
-        long gmtOffsetMillis = currentTimeZone.getOffset(utcNowMillis);
-
-        /*
+         *//*
          * UTC time is measured in milliseconds from January 1, 1970 at midnight from the GMT
          * time zone. Depending on your time zone, the time since January 1, 1970 at midnight (GMT)
          * will be greater or smaller. This variable represents the number of milliseconds since
          * January 1, 1970 (GMT) time.
-         */
-        long timeSinceEpochLocalTimeMillis = utcNowMillis + gmtOffsetMillis;
-
-        /* This method simply converts milliseconds to days, disregarding any fractional days */
-        long daysSinceEpochLocal = TimeUnit.MILLISECONDS.toDays(timeSinceEpochLocalTimeMillis);
-
-        /*
+         *//* This method simply converts milliseconds to days, disregarding any fractional days *//*
          * Finally, we convert back to milliseconds. This time stamp represents today's date at
          * midnight in GMT time. We will need to account for local time zone offsets when
          * extracting this information from the database.
          */
-        long normalizedUtcMidnightMillis = TimeUnit.DAYS.toMillis(daysSinceEpochLocal);
 
-        return normalizedUtcMidnightMillis;
+    fun getNormalizedUtcDateForToday(): Long {
+        val utcNowMillis = System.currentTimeMillis()
+        val currentTimeZone = TimeZone.getDefault()
+        val gmtOffsetMillis = currentTimeZone.getOffset(utcNowMillis).toLong()
+        val timeSinceEpochLocalTimeMillis = utcNowMillis + gmtOffsetMillis
+        val daysSinceEpochLocal = TimeUnit.MILLISECONDS.toDays(timeSinceEpochLocalTimeMillis)
+
+        return TimeUnit.DAYS.toMillis(daysSinceEpochLocal)
     }
 
     /**
@@ -105,8 +94,8 @@ public final class SunshineDateUtils {
      *
      * @return The number of days from the epoch to the date argument.
      */
-    private static long elapsedDaysSinceEpoch(long utcDate) {
-        return TimeUnit.MILLISECONDS.toDays(utcDate);
+    private fun elapsedDaysSinceEpoch(utcDate: Long): Long {
+        return TimeUnit.MILLISECONDS.toDays(utcDate)
     }
 
     /**
@@ -115,30 +104,29 @@ public final class SunshineDateUtils {
      * Normalize, in our usage within Sunshine means to convert a given date in milliseconds to
      * the very beginning of the date in UTC time.
      *
-     *   For example, given the time representing
+     * For example, given the time representing
      *
-     *     Friday, 9/16/2016, 17:45:15 GMT-4:00 DST (1474062315000)
+     * Friday, 9/16/2016, 17:45:15 GMT-4:00 DST (1474062315000)
      *
-     *   this method would return the number of milliseconds (since the epoch) that represents
+     * this method would return the number of milliseconds (since the epoch) that represents
      *
-     *     Friday, 9/16/2016, 00:00:00 GMT (1473984000000)
+     * Friday, 9/16/2016, 00:00:00 GMT (1473984000000)
      *
      * To make it easy to query for the exact date, we normalize all dates that go into
      * the database to the start of the day in UTC time. In order to normalize the date, we take
      * advantage of simple integer division, noting that any remainder is discarded when dividing
      * two integers.
      *
-     *     For example, dividing 7 / 3 (when using integer division) equals 2, not 2.333 repeating
-     *   as you may expect.
+     * For example, dividing 7 / 3 (when using integer division) equals 2, not 2.333 repeating
+     * as you may expect.
      *
      * @param date The date (in milliseconds) to normalize
      *
      * @return The UTC date at 12 midnight of the date
      */
-    public static long normalizeDate(long date) {
-        long daysSinceEpoch = elapsedDaysSinceEpoch(date);
-        long millisFromEpochToTodayAtMidnightUtc = daysSinceEpoch * DAY_IN_MILLIS;
-        return millisFromEpochToTodayAtMidnightUtc;
+    fun normalizeDate(date: Long): Long {
+        val daysSinceEpoch = elapsedDaysSinceEpoch(date)
+        return daysSinceEpoch * DAY_IN_MILLIS
     }
 
     /**
@@ -150,39 +138,39 @@ public final class SunshineDateUtils {
      *
      * @return true if the date represents the beginning of a day in Unix time, false otherwise
      */
-    public static boolean isDateNormalized(long millisSinceEpoch) {
-        boolean isDateNormalized = false;
-        if (millisSinceEpoch % DAY_IN_MILLIS == 0) {
-            isDateNormalized = true;
+    fun isDateNormalized(millisSinceEpoch: Long): Boolean {
+        var isDateNormalized = false
+        if (millisSinceEpoch % DAY_IN_MILLIS == 0L) {
+            isDateNormalized = true
         }
 
-        return isDateNormalized;
+        return isDateNormalized
     }
 
     /**
      * This method will return the local time midnight for the provided normalized UTC date.
      *
      * @param normalizedUtcDate UTC time at midnight for a given date. This number comes from the
-     *                          database
+     * database
      *
      * @return The local date corresponding to the given normalized UTC date
      */
-    private static long getLocalMidnightFromNormalizedUtcDate(long normalizedUtcDate) {
+    private fun getLocalMidnightFromNormalizedUtcDate(normalizedUtcDate: Long): Long {
         /* The timeZone object will provide us the current user's time zone offset */
-        TimeZone timeZone = TimeZone.getDefault();
+        val timeZone = TimeZone.getDefault()
         /*
          * This offset, in milliseconds, when added to a UTC date time, will produce the local
          * time.
          */
-        long gmtOffset = timeZone.getOffset(normalizedUtcDate);
-        long localMidnightMillis = normalizedUtcDate - gmtOffset;
-        return localMidnightMillis;
+        val gmtOffset = timeZone.getOffset(normalizedUtcDate).toLong()
+        return normalizedUtcDate - gmtOffset
     }
 
     /**
      * Helper method to convert the database representation of the date into something to display
      * to users. As classy and polished a user experience as "1474061664" is, we can do better.
-     * <p/>
+     *
+     *
      * The day string for forecast uses the following logic:
      * For today: "Today, June 8"
      * For tomorrow:  "Tomorrow
@@ -192,13 +180,13 @@ public final class SunshineDateUtils {
      * @param context               Context to use for resource localization
      * @param normalizedUtcMidnight The date in milliseconds (UTC midnight)
      * @param showFullDate          Used to show a fuller-version of the date, which always
-     *                              contains either the day of the week, today, or tomorrow, in
-     *                              addition to the date.
+     * contains either the day of the week, today, or tomorrow, in
+     * addition to the date.
      *
      * @return A user-friendly representation of the date such as "Today, June 8", "Tomorrow",
      * or "Friday"
      */
-    public static String getFriendlyDateString(Context context, long normalizedUtcMidnight, boolean showFullDate) {
+    fun getFriendlyDateString(context: Context, normalizedUtcMidnight: Long, showFullDate: Boolean): String {
 
         /*
          * NOTE: localDate should be localDateMidnightMillis and should be straight from the
@@ -208,28 +196,28 @@ public final class SunshineDateUtils {
          * that normalized date and produce a date (in UTC time) that represents the local time
          * zone at midnight.
          */
-        long localDate = getLocalMidnightFromNormalizedUtcDate(normalizedUtcMidnight);
+        val localDate = getLocalMidnightFromNormalizedUtcDate(normalizedUtcMidnight)
 
         /*
          * In order to determine which day of the week we are creating a date string for, we need
          * to compare the number of days that have passed since the epoch (January 1, 1970 at
          * 00:00 GMT)
          */
-        long daysFromEpochToProvidedDate = elapsedDaysSinceEpoch(localDate);
+        val daysFromEpochToProvidedDate = elapsedDaysSinceEpoch(localDate)
 
         /*
          * As a basis for comparison, we use the number of days that have passed from the epoch
          * until today.
          */
-        long daysFromEpochToToday = elapsedDaysSinceEpoch(System.currentTimeMillis());
+        val daysFromEpochToToday = elapsedDaysSinceEpoch(System.currentTimeMillis())
 
         if (daysFromEpochToProvidedDate == daysFromEpochToToday || showFullDate) {
             /*
              * If the date we're building the String for is today's date, the format
              * is "Today, June 24"
              */
-            String dayName = getDayName(context, localDate);
-            String readableDate = getReadableDateString(context, localDate);
+            val dayName = getDayName(context, localDate)
+            val readableDate = getReadableDateString(context, localDate)
             if (daysFromEpochToProvidedDate - daysFromEpochToToday < 2) {
                 /*
                  * Since there is no localized format that returns "Today" or "Tomorrow" in the API
@@ -241,21 +229,21 @@ public final class SunshineDateUtils {
                  * documentation on DateFormat#getBestDateTimePattern(Locale, String)
                  * https://developer.android.com/reference/android/text/format/DateFormat.html#getBestDateTimePattern
                  */
-                String localizedDayName = new SimpleDateFormat("EEEE").format(localDate);
-                return readableDate.replace(localizedDayName, dayName);
+                val localizedDayName = SimpleDateFormat("EEEE").format(localDate)
+                return readableDate.replace(localizedDayName, dayName)
             } else {
-                return readableDate;
+                return readableDate
             }
         } else if (daysFromEpochToProvidedDate < daysFromEpochToToday + 7) {
             /* If the input date is less than a week in the future, just return the day name. */
-            return getDayName(context, localDate);
+            return getDayName(context, localDate)
         } else {
-            int flags = DateUtils.FORMAT_SHOW_DATE
-                    | DateUtils.FORMAT_NO_YEAR
-                    | DateUtils.FORMAT_ABBREV_ALL
-                    | DateUtils.FORMAT_SHOW_WEEKDAY;
+            val flags = (DateUtils.FORMAT_SHOW_DATE
+                    or DateUtils.FORMAT_NO_YEAR
+                    or DateUtils.FORMAT_ABBREV_ALL
+                    or DateUtils.FORMAT_SHOW_WEEKDAY)
 
-            return DateUtils.formatDateTime(context, localDate, flags);
+            return DateUtils.formatDateTime(context, localDate, flags)
         }
     }
 
@@ -268,42 +256,41 @@ public final class SunshineDateUtils {
      *
      * @return The formatted date string
      */
-    private static String getReadableDateString(Context context, long timeInMillis) {
-        int flags = DateUtils.FORMAT_SHOW_DATE
-                | DateUtils.FORMAT_NO_YEAR
-                | DateUtils.FORMAT_SHOW_WEEKDAY;
+    private fun getReadableDateString(context: Context, timeInMillis: Long): String {
+        val flags = (DateUtils.FORMAT_SHOW_DATE
+                or DateUtils.FORMAT_NO_YEAR
+                or DateUtils.FORMAT_SHOW_WEEKDAY)
 
-        return DateUtils.formatDateTime(context, timeInMillis, flags);
+        return DateUtils.formatDateTime(context, timeInMillis, flags)
     }
 
     /**
      * Given a day, returns just the name to use for that day.
-     *   E.g "today", "tomorrow", "Wednesday".
+     * E.g "today", "tomorrow", "Wednesday".
      *
      * @param context      Context to use for resource localization
      * @param dateInMillis The date in milliseconds (UTC time)
      *
      * @return the string day of the week
      */
-    private static String getDayName(Context context, long dateInMillis) {
+    private fun getDayName(context: Context, dateInMillis: Long): String {
         /*
          * If the date is today, return the localized version of "Today" instead of the actual
          * day name.
          */
-        long daysFromEpochToProvidedDate = elapsedDaysSinceEpoch(dateInMillis);
-        long daysFromEpochToToday = elapsedDaysSinceEpoch(System.currentTimeMillis());
+        val daysFromEpochToProvidedDate = elapsedDaysSinceEpoch(dateInMillis)
+        val daysFromEpochToToday = elapsedDaysSinceEpoch(System.currentTimeMillis())
 
-        int daysAfterToday = (int) (daysFromEpochToProvidedDate - daysFromEpochToToday);
+        val daysAfterToday = (daysFromEpochToProvidedDate - daysFromEpochToToday).toInt()
 
-        switch (daysAfterToday) {
-            case 0:
-                return context.getString(R.string.today);
-            case 1:
-                return context.getString(R.string.tomorrow);
+        return when (daysAfterToday) {
+            0 -> context.getString(R.string.today)
+            1 -> context.getString(R.string.tomorrow)
 
-            default:
-                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
-                return dayFormat.format(dateInMillis);
+            else -> {
+                val dayFormat = SimpleDateFormat("EEEE")
+                dayFormat.format(dateInMillis)
+            }
         }
     }
 }
