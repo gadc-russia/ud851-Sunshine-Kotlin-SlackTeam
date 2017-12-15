@@ -26,7 +26,6 @@ import android.widget.Toast
 import com.example.android.sunshine.ForecastAdapter.ForecastAdapterOnClickHandler
 import com.example.android.sunshine.data.getPreferredWeatherLocation
 import com.example.android.sunshine.utilities.*
-import com.example.android.sunshine.utilities.OpenWeatherJsonUtils
 import kotlinx.android.synthetic.main.activity_forecast.*
 
 class MainActivity : AppCompatActivity(), ForecastAdapterOnClickHandler {
@@ -125,11 +124,11 @@ class MainActivity : AppCompatActivity(), ForecastAdapterOnClickHandler {
             pb_loading_indicator.visibility = View.VISIBLE
         }
 
-        override fun doInBackground(vararg params: String): Array<String>? {
+        override fun doInBackground(vararg params: String): Array<String> {
 
             /* If there's no zip code, there's nothing to look up. */
             if (params.isEmpty()) {
-                return null
+                return emptyArray()
             }
 
             val location = params[0]
@@ -138,18 +137,17 @@ class MainActivity : AppCompatActivity(), ForecastAdapterOnClickHandler {
             return try {
                 val jsonWeatherResponse = getResponseFromHttpUrl(weatherRequestUrl)
 
-                OpenWeatherJsonUtils
-                        .getSimpleWeatherStringsFromJson(this@MainActivity, jsonWeatherResponse)
+                getSimpleWeatherStringsFromJson(this@MainActivity, jsonWeatherResponse)
 
             } catch (e: Exception) {
                 e.printStackTrace()
-                null
+                emptyArray()
             }
         }
 
-        override fun onPostExecute(weatherData: Array<String>?) {
+        override fun onPostExecute(weatherData: Array<String>) {
             pb_loading_indicator.visibility = View.INVISIBLE
-            if (weatherData != null) {
+            if (weatherData.isNotEmpty()) {
                 showWeatherDataView()
                 mForecastAdapter.setWeatherData(weatherData)
             } else {
