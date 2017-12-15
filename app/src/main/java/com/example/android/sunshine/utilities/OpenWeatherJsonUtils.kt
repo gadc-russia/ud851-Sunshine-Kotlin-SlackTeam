@@ -125,7 +125,7 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
         val temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE)
         high = temperatureObject.getDouble(OWM_MAX)
         low = temperatureObject.getDouble(OWM_MIN)
-        highAndLow = SunshineWeatherUtils.formatHighLows(context, high, low)
+        highAndLow = formatHighLows(context, high, low)
 
         parsedWeatherData.add("$date - $description - $highAndLow")
     }
