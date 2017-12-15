@@ -24,7 +24,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.example.android.sunshine.ForecastAdapter.ForecastAdapterOnClickHandler
-import com.example.android.sunshine.data.SunshinePreferences
+import com.example.android.sunshine.data.getPreferredWeatherLocation
 import com.example.android.sunshine.utilities.NetworkUtils
 import com.example.android.sunshine.utilities.OpenWeatherJsonUtils
 import kotlinx.android.synthetic.main.activity_forecast.*
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), ForecastAdapterOnClickHandler {
     private fun loadWeatherData() {
         showWeatherDataView()
 
-        val location = SunshinePreferences.getPreferredWeatherLocation(this)
+        val location = getPreferredWeatherLocation(this)
         FetchWeatherTask().execute(location)
     }
 

@@ -19,7 +19,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.android.sunshine.R;
-import com.example.android.sunshine.data.SunshinePreferences;
+import com.example.android.sunshine.data.SunshinePreferencesKt;
 
 /**
  * Contains useful utilities for a weather app, such as conversion between Celsius and Fahrenheit,
@@ -57,7 +57,7 @@ public final class SunshineWeatherUtils {
     public static String formatTemperature(Context context, double temperature) {
         int temperatureFormatResourceId = R.string.format_temperature_celsius;
 
-        if (!SunshinePreferences.isMetric(context)) {
+        if (SunshinePreferencesKt.isMetric(context)) {
             temperature = celsiusToFahrenheit(temperature);
             temperatureFormatResourceId = R.string.format_temperature_fahrenheit;
         }
@@ -102,7 +102,7 @@ public final class SunshineWeatherUtils {
 
         int windFormat = R.string.format_wind_kmh;
 
-        if (!SunshinePreferences.isMetric(context)) {
+        if (!SunshinePreferencesKt.isMetric(context)) {
             windFormat = R.string.format_wind_mph;
             windSpeed = .621371192237334f * windSpeed;
         }
