@@ -85,8 +85,8 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
     val weatherArray = forecastJson.getJSONArray(OWM_LIST)
 
     val localDate = System.currentTimeMillis()
-    val utcDate = SunshineDateUtils.getUTCDateFromLocal(localDate)
-    val startDay = SunshineDateUtils.normalizeDate(utcDate)
+    val utcDate = getUTCDateFromLocal(localDate)
+    val startDay = normalizeDate(utcDate)
 
     for (i in 0 until weatherArray.length()) {
         val date: String
@@ -105,8 +105,8 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
          * We ignore all the datetime values embedded in the JSON and assume that
          * the values are returned in-order by day (which is not guaranteed to be correct).
          */
-        dateTimeMillis = startDay + SunshineDateUtils.DAY_IN_MILLIS * i
-        date = SunshineDateUtils.getFriendlyDateString(context, dateTimeMillis, false)
+        dateTimeMillis = startDay + DAY_IN_MILLIS * i
+        date = getFriendlyDateString(context, dateTimeMillis, false)
 
         /*
          * Description is in a child array called "weather", which is 1 element long.
