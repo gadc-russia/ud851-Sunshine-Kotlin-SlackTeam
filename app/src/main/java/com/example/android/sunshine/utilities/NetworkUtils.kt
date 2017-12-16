@@ -29,13 +29,13 @@ import java.util.Scanner
  * These utilities will be used to communicate with the weather servers.
  */
 
-private val TAG = "NetworkUtils"
+const private val TAG = "NetworkUtils"
 
-private val DYNAMIC_WEATHER_URL = "https://andfun-weather.udacity.com/weather"
+const private val DYNAMIC_WEATHER_URL = "https://andfun-weather.udacity.com/weather"
 
-private val STATIC_WEATHER_URL = "https://andfun-weather.udacity.com/staticweather"
+const private val STATIC_WEATHER_URL = "https://andfun-weather.udacity.com/staticweather"
 
-private val FORECAST_BASE_URL = STATIC_WEATHER_URL
+const private val FORECAST_BASE_URL = STATIC_WEATHER_URL
 
 /*
  * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
@@ -51,12 +51,12 @@ private val units = "metric"
 /* The number of days we want our API to return */
 private val numDays = 14
 
-internal val QUERY_PARAM = "q"
-internal val LAT_PARAM = "lat"
-internal val LON_PARAM = "lon"
-internal val FORMAT_PARAM = "mode"
-internal val UNITS_PARAM = "units"
-internal val DAYS_PARAM = "cnt"
+private const val QUERY_PARAM = "q"
+private const val LAT_PARAM = "lat"
+private const val LON_PARAM = "lon"
+private const val FORMAT_PARAM = "mode"
+private const val UNITS_PARAM = "units"
+private const val DAYS_PARAM = "cnt"
 
 /**
  * Builds the URL used to talk to the weather server using a location. This location is based
@@ -81,7 +81,6 @@ fun buildUrl(locationQuery: String): URL? {
     }
 
     Log.v(TAG, "Built URI " + url!!)
-
     return url
 }
 

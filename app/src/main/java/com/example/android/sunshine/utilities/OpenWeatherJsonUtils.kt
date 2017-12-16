@@ -61,9 +61,6 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
 
     val OWM_MESSAGE_CODE = "cod"
 
-    /* String array to hold each day's weather String */
-    val parsedWeatherData = ArrayList<String>()
-
     val forecastJson = JSONObject(forecastJsonStr)
 
     /* Is there an error? */
@@ -83,6 +80,8 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
     }
 
     val weatherArray = forecastJson.getJSONArray(OWM_LIST)
+    /* String array to hold each day's weather String */
+    val parsedWeatherData: Array<String> = Array<String>(weatherArray.length()){""}
 
     val localDate = System.currentTimeMillis()
     val utcDate = getUTCDateFromLocal(localDate)
@@ -127,10 +126,10 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
         low = temperatureObject.getDouble(OWM_MIN)
         highAndLow = formatHighLows(context, high, low)
 
-        parsedWeatherData.add("$date - $description - $highAndLow")
+        parsedWeatherData[i] = "$date - $description - $highAndLow"
     }
 
-    return parsedWeatherData.toTypedArray()
+    return parsedWeatherData
 }
 
 /**

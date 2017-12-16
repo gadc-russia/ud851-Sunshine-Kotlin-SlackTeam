@@ -21,16 +21,16 @@ import android.text.format.DateUtils
 import com.example.android.sunshine.R
 
 import java.text.SimpleDateFormat
-import java.util.TimeZone
+import java.util.*
 
 /**
  * Class for handling date conversions that are useful for Sunshine.
  */
 
-val SECOND_IN_MILLIS: Long = 1000
-val MINUTE_IN_MILLIS = SECOND_IN_MILLIS * 60
-val HOUR_IN_MILLIS = MINUTE_IN_MILLIS * 60
-val DAY_IN_MILLIS = HOUR_IN_MILLIS * 24
+const val SECOND_IN_MILLIS: Long = 1000
+const val MINUTE_IN_MILLIS = SECOND_IN_MILLIS * 60
+const val HOUR_IN_MILLIS = MINUTE_IN_MILLIS * 60
+const val DAY_IN_MILLIS = HOUR_IN_MILLIS * 24
 
 /**
  * This method returns the number of days since the epoch (January 01, 1970, 12:00 Midnight UTC)
@@ -129,7 +129,7 @@ fun getFriendlyDateString(context: Context, dateInMillis: Long, showFullDate: Bo
              * documentation on DateFormat#getBestDateTimePattern(Locale, String)
              * https://developer.android.com/reference/android/text/format/DateFormat.html#getBestDateTimePattern
              */
-            val localizedDayName = SimpleDateFormat("EEEE").format(localDate)
+            val localizedDayName = SimpleDateFormat("EEEE", Locale.ROOT).format(localDate)
             readableDate.replace(localizedDayName, dayName)
         } else {
             readableDate
@@ -180,16 +180,16 @@ private fun getDayName(context: Context, dateInMillis: Long): String {
      */
     val dayNumber = getDayNumber(dateInMillis)
     val currentDayNumber = getDayNumber(System.currentTimeMillis())
-    return if (dayNumber == currentDayNumber) {
-        context.getString(R.string.today)
-    } else if (dayNumber == currentDayNumber + 1) {
-        context.getString(R.string.tomorrow)
-    } else {
-        /*
-     * Otherwise, if the day is not today, the format is just the day of the week
-     * (e.g "Wednesday")
-     */
-        val dayFormat = SimpleDateFormat("EEEE")
-        dayFormat.format(dateInMillis)
+    return when (dayNumber) {
+        currentDayNumber -> context.getString(R.string.today)
+        currentDayNumber + 1 -> context.getString(R.string.tomorrow)
+        else -> {
+            /*
+            * Otherwise, if the day is not today, the format is just the day of the week
+            * (e.g "Wednesday")
+            */
+            val dayFormat = SimpleDateFormat("EEEE", Locale.ROOT)
+            dayFormat.format(dateInMillis)
+        }
     }
 }

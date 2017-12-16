@@ -6,14 +6,14 @@ import android.content.Context
 * Human readable location string, provided by the API.  Because for styling,
 * "Mountain View" is more recognizable than 94043.
 */
-val PREF_CITY_NAME = "city_name"
+const val PREF_CITY_NAME = "city_name"
 
 /*
  * In order to uniquely pinpoint the location on the map when we launch the
  * map intent, we store the latitude and longitude.
  */
-val PREF_COORD_LAT = "coord_lat"
-val PREF_COORD_LONG = "coord_long"
+const val PREF_COORD_LAT = "coord_lat"
+const val PREF_COORD_LONG = "coord_long"
 
 /*
  * Before you implement methods to return your REAL preference for location,
@@ -25,7 +25,7 @@ val defaultWeatherLocation = "94043,USA"
 /** This will be implemented in a future lesson  */
 val defaultWeatherCoordinates = doubleArrayOf(37.4284, 122.0724)
 
-private val DEFAULT_MAP_LOCATION = "1600 Amphitheatre Parkway, Mountain View, CA 94043"
+const private val DEFAULT_MAP_LOCATION = "1600 Amphitheatre Parkway, Mountain View, CA 94043"
 
 /**
  * Helper method to handle setting location details in Preferences (City Name, Latitude,
