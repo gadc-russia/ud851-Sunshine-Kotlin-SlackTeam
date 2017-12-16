@@ -25,8 +25,7 @@ import android.view.MenuItem
 import android.view.View
 import com.example.android.sunshine.ForecastAdapter.ForecastAdapterOnClickHandler
 import com.example.android.sunshine.data.*
-import com.example.android.sunshine.utilities.NetworkUtils
-import com.example.android.sunshine.utilities.OpenWeatherJsonUtils
+import com.example.android.sunshine.utilities.*
 import kotlinx.android.synthetic.main.activity_forecast.*
 
 class MainActivity : AppCompatActivity(), ForecastAdapterOnClickHandler {
@@ -134,14 +133,12 @@ class MainActivity : AppCompatActivity(), ForecastAdapterOnClickHandler {
             }
 
             val location = params[0]
-            val weatherRequestUrl = NetworkUtils.buildUrl(location)
+            val weatherRequestUrl = buildUrl(location)
 
             return try {
-                val jsonWeatherResponse = NetworkUtils
-                        .getResponseFromHttpUrl(weatherRequestUrl)
+                val jsonWeatherResponse = getResponseFromHttpUrl(weatherRequestUrl)
 
-                OpenWeatherJsonUtils
-                        .getSimpleWeatherStringsFromJson(this@MainActivity, jsonWeatherResponse)
+                getSimpleWeatherStringsFromJson(this@MainActivity, jsonWeatherResponse)
             } catch (e: Exception) {
                 e.printStackTrace()
                 null
