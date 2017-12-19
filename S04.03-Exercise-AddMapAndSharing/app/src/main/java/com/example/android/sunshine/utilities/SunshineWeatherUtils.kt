@@ -138,63 +138,63 @@ fun getFormattedWind(context: Context, windSpeed: Float, degrees: Float): String
  */
 fun getStringForWeatherCondition(context: Context, weatherId: Int): String {
     val stringId =
-    when (weatherId) {
-        in 200..232 -> R.string.condition_2xx
-        in 300..321 -> R.string.condition_3xx
-        500 -> R.string.condition_500
-        501 -> R.string.condition_501
-        502 -> R.string.condition_502
-        503 -> R.string.condition_503
-        504 -> R.string.condition_504
-        511 -> R.string.condition_511
-        520 -> R.string.condition_520
-        531 -> R.string.condition_531
-        600 -> R.string.condition_600
-        601 -> R.string.condition_601
-        602 -> R.string.condition_602
-        611 -> R.string.condition_611
-        612 -> R.string.condition_612
-        615 -> R.string.condition_615
-        616 -> R.string.condition_616
-        620 -> R.string.condition_620
-        621 -> R.string.condition_621
-        622 -> R.string.condition_622
-        701 -> R.string.condition_701
-        711 -> R.string.condition_711
-        721 -> R.string.condition_721
-        731 -> R.string.condition_731
-        741 -> R.string.condition_741
-        751 -> R.string.condition_751
-        761 -> R.string.condition_761
-        762 -> R.string.condition_762
-        771 -> R.string.condition_771
-        781 -> R.string.condition_781
-        800 -> R.string.condition_800
-        801 -> R.string.condition_801
-        802 -> R.string.condition_802
-        803 -> R.string.condition_803
-        804 -> R.string.condition_804
-        900 -> R.string.condition_900
-        901 -> R.string.condition_901
-        902 -> R.string.condition_902
-        903 -> R.string.condition_903
-        904 -> R.string.condition_904
-        905 -> R.string.condition_905
-        906 -> R.string.condition_906
-        951 -> R.string.condition_951
-        952 -> R.string.condition_952
-        953 -> R.string.condition_953
-        954 -> R.string.condition_954
-        955 -> R.string.condition_955
-        956 -> R.string.condition_956
-        957 -> R.string.condition_957
-        958 -> R.string.condition_958
-        959 -> R.string.condition_959
-        960 -> R.string.condition_960
-        961 -> R.string.condition_961
-        962 -> R.string.condition_962
-        else -> return context.getString(R.string.condition_unknown, weatherId)
-    }
+            when (weatherId) {
+                in 200..232 -> R.string.condition_2xx
+                in 300..321 -> R.string.condition_3xx
+                500 -> R.string.condition_500
+                501 -> R.string.condition_501
+                502 -> R.string.condition_502
+                503 -> R.string.condition_503
+                504 -> R.string.condition_504
+                511 -> R.string.condition_511
+                520 -> R.string.condition_520
+                531 -> R.string.condition_531
+                600 -> R.string.condition_600
+                601 -> R.string.condition_601
+                602 -> R.string.condition_602
+                611 -> R.string.condition_611
+                612 -> R.string.condition_612
+                615 -> R.string.condition_615
+                616 -> R.string.condition_616
+                620 -> R.string.condition_620
+                621 -> R.string.condition_621
+                622 -> R.string.condition_622
+                701 -> R.string.condition_701
+                711 -> R.string.condition_711
+                721 -> R.string.condition_721
+                731 -> R.string.condition_731
+                741 -> R.string.condition_741
+                751 -> R.string.condition_751
+                761 -> R.string.condition_761
+                762 -> R.string.condition_762
+                771 -> R.string.condition_771
+                781 -> R.string.condition_781
+                800 -> R.string.condition_800
+                801 -> R.string.condition_801
+                802 -> R.string.condition_802
+                803 -> R.string.condition_803
+                804 -> R.string.condition_804
+                900 -> R.string.condition_900
+                901 -> R.string.condition_901
+                902 -> R.string.condition_902
+                903 -> R.string.condition_903
+                904 -> R.string.condition_904
+                905 -> R.string.condition_905
+                906 -> R.string.condition_906
+                951 -> R.string.condition_951
+                952 -> R.string.condition_952
+                953 -> R.string.condition_953
+                954 -> R.string.condition_954
+                955 -> R.string.condition_955
+                956 -> R.string.condition_956
+                957 -> R.string.condition_957
+                958 -> R.string.condition_958
+                959 -> R.string.condition_959
+                960 -> R.string.condition_960
+                961 -> R.string.condition_961
+                962 -> R.string.condition_962
+                else -> return context.getString(R.string.condition_unknown, weatherId)
+            }
     return context.getString(stringId)
 }
 
