@@ -17,11 +17,8 @@ package com.example.android.sunshine.utilities
 
 import android.content.ContentValues
 import android.content.Context
-
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-
 import java.net.HttpURLConnection
 
 /**
@@ -82,7 +79,7 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
 
     val weatherArray = forecastJson.getJSONArray(OWM_LIST)
     /* String array to hold each day's weather String */
-    val parsedWeatherData: Array<String> = Array<String>(weatherArray.length()){""}
+    val parsedWeatherData: Array<String> = Array<String>(weatherArray.length()) { "" }
 
     val localDate = System.currentTimeMillis()
     val utcDate = getUTCDateFromLocal(localDate)

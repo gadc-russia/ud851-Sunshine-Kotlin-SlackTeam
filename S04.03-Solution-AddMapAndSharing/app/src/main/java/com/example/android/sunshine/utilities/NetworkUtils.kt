@@ -17,13 +17,11 @@ package com.example.android.sunshine.utilities
 
 import android.net.Uri
 import android.util.Log
-
 import java.io.IOException
-import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
-import java.util.Scanner
+import java.util.*
 
 /**
  * These utilities will be used to communicate with the weather servers.
@@ -107,7 +105,11 @@ fun buildUrl(lat: Double?, lon: Double?): URL? {
  * @throws IOException Related to network and stream reading
  */
 @Throws(IOException::class)
-fun getResponseFromHttpUrl(url: URL): String? {
+fun getResponseFromHttpUrl(url: URL?): String? {
+    if (url == null) {
+        return null
+    }
+
     val urlConnection = url.openConnection() as HttpURLConnection
     try {
         val input = urlConnection.inputStream
