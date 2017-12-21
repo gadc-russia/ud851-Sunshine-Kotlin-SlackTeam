@@ -105,7 +105,11 @@ fun buildUrl(lat: Double?, lon: Double?): URL? {
  * @throws IOException Related to network and stream reading
  */
 @Throws(IOException::class)
-fun getResponseFromHttpUrl(url: URL): String? {
+fun getResponseFromHttpUrl(url: URL?): String? {
+    if (url == null) {
+        return null
+    }
+
     val urlConnection = url.openConnection() as HttpURLConnection
     try {
         val `in` = urlConnection.inputStream
