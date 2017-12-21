@@ -168,13 +168,13 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
             }
 
             String location = params[0];
-            URL weatherRequestUrl = NetworkUtils.buildUrl(location);
+            URL weatherRequestUrl = NetworkUtils.INSTANCE.buildUrl(location);
 
             try {
-                String jsonWeatherResponse = NetworkUtils
+                String jsonWeatherResponse = NetworkUtils.INSTANCE
                         .getResponseFromHttpUrl(weatherRequestUrl);
 
-                String[] simpleJsonWeatherData = OpenWeatherJsonUtils
+                String[] simpleJsonWeatherData = OpenWeatherJsonUtils.INSTANCE
                         .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
 
                 return simpleJsonWeatherData;
