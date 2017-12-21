@@ -17,11 +17,8 @@ package com.example.android.sunshine.utilities
 
 import android.content.ContentValues
 import android.content.Context
-
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-
 import java.net.HttpURLConnection
 
 /**
@@ -82,11 +79,11 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
 
     val weatherArray = forecastJson.getJSONArray(OWM_LIST)
     /* String array to hold each day's weather String */
-    val parsedWeatherData: Array<String> = Array<String>(weatherArray.length()){""}
+    val parsedWeatherData: Array<String> = Array<String>(weatherArray.length()) { "" }
 
     val localDate = System.currentTimeMillis()
-    val utcDate = SunshineDateUtils.getUTCDateFromLocal(localDate)
-    val startDay = SunshineDateUtils.normalizeDate(utcDate)
+    val utcDate = getUTCDateFromLocal(localDate)
+    val startDay = normalizeDate(utcDate)
 
     for (i in 0 until weatherArray.length()) {
         val date: String
@@ -105,8 +102,8 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
          * We ignore all the datetime values embedded in the JSON and assume that
          * the values are returned in-order by day (which is not guaranteed to be correct).
          */
-        dateTimeMillis = startDay + SunshineDateUtils.DAY_IN_MILLIS * i
-        date = SunshineDateUtils.getFriendlyDateString(context, dateTimeMillis, false)
+        dateTimeMillis = startDay + DAY_IN_MILLIS * i
+        date = getFriendlyDateString(context, dateTimeMillis, false)
 
         /*
          * Description is in a child array called "weather", which is 1 element long.
@@ -125,7 +122,7 @@ fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?):
         val temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE)
         high = temperatureObject.getDouble(OWM_MAX)
         low = temperatureObject.getDouble(OWM_MIN)
-        highAndLow = SunshineWeatherUtils.formatHighLows(context, high, low)
+        highAndLow = formatHighLows(context, high, low)
 
         parsedWeatherData[i] = "$date - $description - $highAndLow"
     }
