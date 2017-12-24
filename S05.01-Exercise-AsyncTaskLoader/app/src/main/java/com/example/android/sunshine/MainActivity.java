@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
     private void loadWeatherData() {
         showWeatherDataView();
 
-        String location = SunshinePreferences.getPreferredWeatherLocation(this);
+        String location = SunshinePreferences.INSTANCE.getPreferredWeatherLocation(this);
         new FetchWeatherTask().execute(location);
     }
 
