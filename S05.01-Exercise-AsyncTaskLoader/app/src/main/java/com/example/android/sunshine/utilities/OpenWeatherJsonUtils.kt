@@ -42,7 +42,7 @@ import java.net.HttpURLConnection
  * @throws JSONException If JSON data cannot be properly parsed
  */
 @Throws(JSONException::class)
-fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String): Array<String> {
+fun getSimpleWeatherStringsFromJson(context: Context, forecastJsonStr: String?): Array<String> {
 
     /* Weather information. Each day's forecast info is an element of the "list" array */
     val OWM_LIST = "list"
