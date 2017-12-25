@@ -197,13 +197,13 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public String[] loadInBackground() {
 
-                URL weatherRequestUrl = NetworkUtils.getUrl(MainActivity.this);
+                URL weatherRequestUrl = NetworkUtils.INSTANCE.getUrl(MainActivity.this);
 
                 try {
-                    String jsonWeatherResponse = NetworkUtils
+                    String jsonWeatherResponse = NetworkUtils.INSTANCE
                             .getResponseFromHttpUrl(weatherRequestUrl);
 
-                    String[] simpleJsonWeatherData = OpenWeatherJsonUtils
+                    String[] simpleJsonWeatherData = OpenWeatherJsonUtils.INSTANCE
                             .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
 
                     return simpleJsonWeatherData;
