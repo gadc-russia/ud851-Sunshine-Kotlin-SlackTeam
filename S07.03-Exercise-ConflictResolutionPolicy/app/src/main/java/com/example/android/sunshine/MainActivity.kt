@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), ForecastAdapter.ForecastAdapterOnClick
          * callback. In our case, we don't actually use the Bundle, but it's here in case we wanted
          * to.
          */
-        val bundleForLoader: Bundle? = null
+        val bundleForLoader: Bundle = Bundle.EMPTY
 
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
