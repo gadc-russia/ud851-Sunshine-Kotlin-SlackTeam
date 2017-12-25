@@ -79,7 +79,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         if (key.equals(getString(R.string.pref_location_key))) {
             // we've changed the location
             // Wipe out any potential PlacePicker latlng values so that we can use this text entry.
-            SunshinePreferences.resetLocationCoordinates(activity);
+            SunshinePreferences.INSTANCE.resetLocationCoordinates(activity);
         }
         Preference preference = findPreference(key);
         if (null != preference) {

@@ -196,7 +196,7 @@ public final class OpenWeatherJsonUtils {
         double cityLatitude = cityCoord.getDouble(OWM_LATITUDE);
         double cityLongitude = cityCoord.getDouble(OWM_LONGITUDE);
 
-        SunshinePreferences.setLocationDetails(context, cityLatitude, cityLongitude);
+        SunshinePreferences.INSTANCE.setLocationDetails(context, cityLatitude, cityLongitude);
 
         ContentValues[] weatherContentValues = new ContentValues[jsonWeatherArray.length()];
 
@@ -260,14 +260,14 @@ public final class OpenWeatherJsonUtils {
             low = temperatureObject.getDouble(OWM_MIN);
 
             ContentValues weatherValues = new ContentValues();
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, dateTimeMillis);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, windDirection);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, high);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, low);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+            weatherValues.put(WeatherContract.WeatherEntry.Companion.getCOLUMN_DATE(), dateTimeMillis);
+            weatherValues.put(WeatherContract.WeatherEntry.Companion.getCOLUMN_HUMIDITY(), humidity);
+            weatherValues.put(WeatherContract.WeatherEntry.Companion.getCOLUMN_PRESSURE(), pressure);
+            weatherValues.put(WeatherContract.WeatherEntry.Companion.getCOLUMN_WIND_SPEED(), windSpeed);
+            weatherValues.put(WeatherContract.WeatherEntry.Companion.getCOLUMN_DEGREES(), windDirection);
+            weatherValues.put(WeatherContract.WeatherEntry.Companion.getCOLUMN_MAX_TEMP(), high);
+            weatherValues.put(WeatherContract.WeatherEntry.Companion.getCOLUMN_MIN_TEMP(), low);
+            weatherValues.put(WeatherContract.WeatherEntry.Companion.getCOLUMN_WEATHER_ID(), weatherId);
 
             weatherContentValues[i] = weatherValues;
         }
