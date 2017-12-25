@@ -22,7 +22,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.example.android.sunshine.utilities.SunshineDateUtils;
 import com.example.android.sunshine.utils.PollingCheck;
 
 import java.lang.reflect.Field;
@@ -32,6 +31,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.text.format.DateUtils.DAY_IN_MILLIS;
 import static com.example.android.sunshine.data.TestSunshineDatabase.REFLECTED_COLUMN_DATE;
 import static com.example.android.sunshine.data.TestSunshineDatabase.REFLECTED_COLUMN_HUMIDITY;
 import static com.example.android.sunshine.data.TestSunshineDatabase.REFLECTED_COLUMN_MAX;
@@ -40,6 +40,7 @@ import static com.example.android.sunshine.data.TestSunshineDatabase.REFLECTED_C
 import static com.example.android.sunshine.data.TestSunshineDatabase.REFLECTED_COLUMN_WEATHER_ID;
 import static com.example.android.sunshine.data.TestSunshineDatabase.REFLECTED_COLUMN_WIND_DIR;
 import static com.example.android.sunshine.data.TestSunshineDatabase.REFLECTED_COLUMN_WIND_SPEED;
+import static com.example.android.sunshine.utilities.SunshineDateUtilsKt.normalizeDate;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -144,11 +145,11 @@ class TestUtilities {
         ContentValues[] bulkTestWeatherValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
 
         long testDate = TestUtilities.DATE_NORMALIZED;
-        long normalizedTestDate = SunshineDateUtils.INSTANCE.normalizeDate(testDate);
+        long normalizedTestDate = normalizeDate(testDate);
 
         for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++) {
 
-            normalizedTestDate += SunshineDateUtils.INSTANCE.getDAY_IN_MILLIS();
+            normalizedTestDate += DAY_IN_MILLIS;
 
             ContentValues weatherValues = new ContentValues();
 
