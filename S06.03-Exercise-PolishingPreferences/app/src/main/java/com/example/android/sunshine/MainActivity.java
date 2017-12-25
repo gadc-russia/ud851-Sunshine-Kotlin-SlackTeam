@@ -192,13 +192,13 @@ public class MainActivity extends AppCompatActivity implements
                 String locationQuery = SunshinePreferences.INSTANCE
                         .getPreferredWeatherLocation(MainActivity.this);
 
-                URL weatherRequestUrl = NetworkUtils.buildUrl(locationQuery);
+                URL weatherRequestUrl = NetworkUtils.INSTANCE.buildUrl(locationQuery);
 
                 try {
-                    String jsonWeatherResponse = NetworkUtils
+                    String jsonWeatherResponse = NetworkUtils.INSTANCE
                             .getResponseFromHttpUrl(weatherRequestUrl);
 
-                    String[] simpleJsonWeatherData = OpenWeatherJsonUtils
+                    String[] simpleJsonWeatherData = OpenWeatherJsonUtils.INSTANCE
                             .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
 
                     return simpleJsonWeatherData;
