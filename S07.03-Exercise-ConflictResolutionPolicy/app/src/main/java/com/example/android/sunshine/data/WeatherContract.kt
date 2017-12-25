@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.data;
+package com.example.android.sunshine.data
 
-import android.provider.BaseColumns;
+import android.provider.BaseColumns
 
 /**
  * Defines table and column names for the weather database. This class is not necessary, but keeps
  * the code organized.
  */
-public class WeatherContract {
+class WeatherContract {
 
     /* Inner class that defines the table contents of the weather table */
-    public static final class WeatherEntry implements BaseColumns {
+    object WeatherEntry : BaseColumns {
+        const val _ID = "_id"
 
         /* Used internally as the name of our weather table. */
-        public static final String TABLE_NAME = "weather";
+        const val TABLE_NAME = "weather"
 
         /*
          * The date column will store the UTC date that correlates to the local date for which
@@ -45,30 +46,30 @@ public class WeatherContract {
          * local time at midnight, as all we have to do is add a particular time zone's GMT
          * offset to this date to get local time at midnight on the appropriate date.
          */
-        public static final String COLUMN_DATE = "date";
+        const val COLUMN_DATE = "date"
 
         /* Weather ID as returned by API, used to identify the icon to be used */
-        public static final String COLUMN_WEATHER_ID = "weather_id";
+        const val COLUMN_WEATHER_ID = "weather_id"
 
         /* Min and max temperatures in °C for the day (stored as floats in the database) */
-        public static final String COLUMN_MIN_TEMP = "min";
-        public static final String COLUMN_MAX_TEMP = "max";
+        const val COLUMN_MIN_TEMP = "min"
+        const val COLUMN_MAX_TEMP = "max"
 
         /* Humidity is stored as a float representing percentage */
-        public static final String COLUMN_HUMIDITY = "humidity";
+        const val COLUMN_HUMIDITY = "humidity"
 
         /* Pressure is stored as a float representing percentage */
-        public static final String COLUMN_PRESSURE = "pressure";
+        const val COLUMN_PRESSURE = "pressure"
 
         /* Wind speed is stored as a float representing wind speed in mph */
-        public static final String COLUMN_WIND_SPEED = "wind";
+        const val COLUMN_WIND_SPEED = "wind"
 
         /*
-         * Degrees are meteorological degrees (e.g, 0 is north, 180 is south).
-         * Stored as floats in the database.
-         *
-         * Note: These degrees are not to be confused with temperature degrees of the weather.
-         */
-        public static final String COLUMN_DEGREES = "degrees";
+     * Degrees are meteorological degrees (e.g, 0 is north, 180 is south).
+     * Stored as floats in the database.
+     *
+     * Note: These degrees are not to be confused with temperature degrees of the weather.
+     */
+        const val COLUMN_DEGREES = "degrees"
     }
 }
