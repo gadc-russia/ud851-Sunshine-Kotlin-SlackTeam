@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public String[] loadInBackground() {
 
-                String locationQuery = SunshinePreferences
+                String locationQuery = SunshinePreferences.INSTANCE
                         .getPreferredWeatherLocation(MainActivity.this);
 
                 URL weatherRequestUrl = NetworkUtils.buildUrl(locationQuery);
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void openLocationInMap() {
         // COMPLETED (9) Use preferred location rather than a default location to display in the map
-        String addressString = SunshinePreferences.getPreferredWeatherLocation(this);
+        String addressString = SunshinePreferences.INSTANCE.getPreferredWeatherLocation(this);
         Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
