@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public String[] loadInBackground() {
 
-                String locationQuery = SunshinePreferences
+                String locationQuery = SunshinePreferences.INSTANCE
                         .getPreferredWeatherLocation(MainActivity.this);
 
                 URL weatherRequestUrl = NetworkUtils.buildUrl(locationQuery);
