@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements
      * open the Common Intents page
      */
     private void openPreferredLocationInMap() {
-        double[] coords = SunshinePreferences.getLocationCoordinates(this);
+        double[] coords = SunshinePreferences.INSTANCE.getLocationCoordinates(this);
         String posLat = Double.toString(coords[0]);
         String posLong = Double.toString(coords[1]);
         Uri geoLocation = Uri.parse("geo:" + posLat + "," + posLong);
