@@ -34,8 +34,8 @@ import static junit.framework.Assert.fail;
 @RunWith(AndroidJUnit4.class)
 public class TestUriMatcher {
 
-    private static final Uri TEST_WEATHER_DIR = WeatherContract.WeatherEntry.CONTENT_URI;
-    private static final Uri TEST_WEATHER_WITH_DATE_DIR = WeatherContract.WeatherEntry
+    private static final Uri TEST_WEATHER_DIR = WeatherContract.Companion.getBASE_CONTENT_URI();
+    private static final Uri TEST_WEATHER_WITH_DATE_DIR = WeatherContract.Companion
             .buildWeatherUriWithDate(TestUtilities.DATE_NORMALIZED);
 
     private static final String weatherCodeVariableName = "CODE_WEATHER";

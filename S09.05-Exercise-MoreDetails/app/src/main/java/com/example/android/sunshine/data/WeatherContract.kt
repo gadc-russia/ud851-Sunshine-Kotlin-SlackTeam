@@ -17,8 +17,7 @@ package com.example.android.sunshine.data
 
 import android.net.Uri
 import android.provider.BaseColumns
-
-import com.example.android.sunshine.utilities.SunshineDateUtils
+import com.example.android.sunshine.utilities.normalizeDate
 
 /**
  * Defines table and column names for the weather database. This class is not necessary, but keeps
@@ -60,6 +59,33 @@ class WeatherContract {
         val CONTENT_URI: Uri = BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_WEATHER)
                 .build()
+
+        /**
+         * Builds a URI that adds the weather date to the end of the forecast content URI path.
+         * This is used to query details about a single weather entry by date. This is what we
+         * use for the detail view query. We assume a normalized date is passed to this method.
+         *
+         * @param date Normalized date in milliseconds
+         * @return Uri to query details about a single weather entry
+         */
+        fun buildWeatherUriWithDate(date: Long): Uri {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(java.lang.Long.toString(date))
+                    .build()
+        }
+
+        /**
+         * Returns just the selection part of the weather query from a normalized today value.
+         * This is used to get a weather forecast from today's date. To make this easy to use
+         * in compound selection, we embed today's date as an argument in the query.
+         *
+         * @return The selection part of the weather query for today onwards
+         */
+        val sqlSelectForTodayOnwards: String
+            get() {
+                val normalizedUtcNow = normalizeDate(System.currentTimeMillis())
+                return WeatherContract.WeatherEntry.COLUMN_DATE + " >= " + normalizedUtcNow
+            }
     }
 
     /* Inner class that defines the table contents of the weather table */
@@ -111,32 +137,5 @@ class WeatherContract {
      * Note: These degrees are not to be confused with temperature degrees of the weather.
      */
         const val COLUMN_DEGREES = "degrees"
-
-        /**
-         * Builds a URI that adds the weather date to the end of the forecast content URI path.
-         * This is used to query details about a single weather entry by date. This is what we
-         * use for the detail view query. We assume a normalized date is passed to this method.
-         *
-         * @param date Normalized date in milliseconds
-         * @return Uri to query details about a single weather entry
-         */
-        fun buildWeatherUriWithDate(date: Long): Uri {
-            return CONTENT_URI.buildUpon()
-                    .appendPath(java.lang.Long.toString(date))
-                    .build()
-        }
-
-        /**
-         * Returns just the selection part of the weather query from a normalized today value.
-         * This is used to get a weather forecast from today's date. To make this easy to use
-         * in compound selection, we embed today's date as an argument in the query.
-         *
-         * @return The selection part of the weather query for today onwards
-         */
-        val sqlSelectForTodayOnwards: String
-            get() {
-                val normalizedUtcNow = SunshineDateUtils.normalizeDate(System.currentTimeMillis())
-                return WeatherContract.WeatherEntry.COLUMN_DATE + " >= " + normalizedUtcNow
-            }
     }
 }

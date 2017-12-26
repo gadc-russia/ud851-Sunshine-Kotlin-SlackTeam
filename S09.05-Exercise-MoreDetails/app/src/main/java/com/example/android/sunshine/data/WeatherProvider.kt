@@ -21,7 +21,7 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import com.example.android.sunshine.utilities.SunshineDateUtils
+import com.example.android.sunshine.utilities.isDateNormalized
 
 /**
  * This class serves as the ContentProvider for all of Sunshine's data. This class allows us to
@@ -86,7 +86,7 @@ class WeatherProvider : ContentProvider() {
                 try {
                     for (value in values) {
                         val weatherDate = value.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE)!!
-                        if (!SunshineDateUtils.isDateNormalized(weatherDate)) {
+                        if (!isDateNormalized(weatherDate)) {
                             throw IllegalArgumentException("Date must be normalized to insert")
                         }
 
