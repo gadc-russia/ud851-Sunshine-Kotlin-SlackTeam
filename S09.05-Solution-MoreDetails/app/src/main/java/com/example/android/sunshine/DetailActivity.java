@@ -274,7 +274,7 @@ public class DetailActivity extends AppCompatActivity implements
          * SunshineDateUtils#getFriendlyDateString takes care of this for us.
          */
         long localDateMidnightGmt = data.getLong(INDEX_WEATHER_DATE);
-        String dateText = SunshineDateUtils.getFriendlyDateString(this, localDateMidnightGmt, true);
+        String dateText = SunshineDateUtils.INSTANCE.getFriendlyDateString(this, localDateMidnightGmt, true);
 
         mDateView.setText(dateText);
 
@@ -285,7 +285,7 @@ public class DetailActivity extends AppCompatActivity implements
         /* Read weather condition ID from the cursor (ID provided by Open Weather Map) */
         int weatherId = data.getInt(INDEX_WEATHER_CONDITION_ID);
         /* Use the weatherId to obtain the proper description */
-        String description = SunshineWeatherUtils.getStringForWeatherCondition(this, weatherId);
+        String description = SunshineWeatherUtils.INSTANCE.getStringForWeatherCondition(this, weatherId);
 
         /* Set the text */
         mDescriptionView.setText(description);
@@ -301,7 +301,7 @@ public class DetailActivity extends AppCompatActivity implements
          * the temperature. This method will also append either °C or °F to the temperature
          * String.
          */
-        String highString = SunshineWeatherUtils.formatTemperature(this, highInCelsius);
+        String highString = SunshineWeatherUtils.INSTANCE.formatTemperature(this, highInCelsius);
 
         /* Set the text */
         mHighTemperatureView.setText(highString);
@@ -317,7 +317,7 @@ public class DetailActivity extends AppCompatActivity implements
          * the temperature. This method will also append either °C or °F to the temperature
          * String.
          */
-        String lowString = SunshineWeatherUtils.formatTemperature(this, lowInCelsius);
+        String lowString = SunshineWeatherUtils.INSTANCE.formatTemperature(this, lowInCelsius);
 
         /* Set the text */
         mLowTemperatureView.setText(lowString);
@@ -340,7 +340,7 @@ public class DetailActivity extends AppCompatActivity implements
         /* Read wind speed (in MPH) and direction (in compass degrees) from the cursor  */
         float windSpeed = data.getFloat(INDEX_WEATHER_WIND_SPEED);
         float windDirection = data.getFloat(INDEX_WEATHER_DEGREES);
-        String windString = SunshineWeatherUtils.getFormattedWind(this, windSpeed, windDirection);
+        String windString = SunshineWeatherUtils.INSTANCE.getFormattedWind(this, windSpeed, windDirection);
 
         /* Set the text */
         mWindView.setText(windString);
