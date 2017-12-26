@@ -13,96 +13,70 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine;
+package com.example.android.sunshine
 
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
+import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
+import android.os.Bundle
+import android.support.v4.app.LoaderManager
+import android.support.v4.content.CursorLoader
+import android.support.v4.content.Loader
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import com.example.android.sunshine.data.WeatherContract
+import com.example.android.sunshine.data.getLocationCoordinates
+import com.example.android.sunshine.utilities.insertFakeData
+import kotlinx.android.synthetic.main.activity_forecast.*
 
-import com.example.android.sunshine.data.SunshinePreferences;
-import com.example.android.sunshine.data.WeatherContract;
-import com.example.android.sunshine.utilities.FakeDataUtils;
-
-public class MainActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>,
+class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>,
         ForecastAdapter.ForecastAdapterOnClickHandler {
 
-    private final String TAG = MainActivity.class.getSimpleName();
+    private val TAG = MainActivity::class.java.simpleName
+    private val FORECAST_LOADER_ID = 0
+    private var PREFERENCES_HAVE_BEEN_UPDATED = false
 
     /*
-     * The columns of data that we are interested in displaying within our MainActivity's list of
-     * weather data.
-     */
-    public static final String[] MAIN_FORECAST_PROJECTION = {
-            WeatherContract.WeatherEntry.COLUMN_DATE,
-            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
-    };
+    * The columns of data that we are interested in displaying within our MainActivity's list of
+    * weather data.
+    */
+    val MAIN_FORECAST_PROJECTION = arrayOf(WeatherContract.WeatherEntry.COLUMN_DATE, WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, WeatherContract.WeatherEntry.COLUMN_WEATHER_ID)
 
     /*
      * We store the indices of the values in the array of Strings above to more quickly be able to
      * access the data from our query. If the order of the Strings above changes, these indices
      * must be adjusted to match the order of the Strings.
      */
-    public static final int INDEX_WEATHER_DATE = 0;
-    public static final int INDEX_WEATHER_MAX_TEMP = 1;
-    public static final int INDEX_WEATHER_MIN_TEMP = 2;
-    public static final int INDEX_WEATHER_CONDITION_ID = 3;
-
+    companion object {
+        const val INDEX_WEATHER_DATE = 0
+        const val INDEX_WEATHER_MAX_TEMP = 1
+        const val INDEX_WEATHER_MIN_TEMP = 2
+        const val INDEX_WEATHER_CONDITION_ID = 3
+    }
 
     /*
-     * This ID will be used to identify the Loader responsible for loading our weather forecast. In
-     * some cases, one Activity can deal with many Loaders. However, in our case, there is only one.
-     * We will still use this ID to initialize the loader and create the loader for best practice.
-     * Please note that 44 was chosen arbitrarily. You can use whatever number you like, so long as
-     * it is unique and consistent.
-     */
-    private static final int ID_FORECAST_LOADER = 44;
+ * This ID will be used to identify the Loader responsible for loading our weather forecast. In
+ * some cases, one Activity can deal with many Loaders. However, in our case, there is only one.
+ * We will still use this ID to initialize the loader and create the loader for best practice.
+ * Please note that 44 was chosen arbitrarily. You can use whatever number you like, so long as
+ * it is unique and consistent.
+ */
+    private val ID_FORECAST_LOADER = 44
 
-    private ForecastAdapter mForecastAdapter;
-    private RecyclerView mRecyclerView;
-    private int mPosition = RecyclerView.NO_POSITION;
+    private lateinit var mForecastAdapter: ForecastAdapter
+    private var mPosition = RecyclerView.NO_POSITION
 
-    private ProgressBar mLoadingIndicator;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_forecast)
+        supportActionBar!!.elevation = 0f
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forecast);
-        getSupportActionBar().setElevation(0f);
-
-        FakeDataUtils.insertFakeData(this);
-
-        /*
-         * Using findViewById, we get a reference to our RecyclerView from xml. This allows us to
-         * do things like set the adapter of the RecyclerView and toggle the visibility.
-         */
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_forecast);
-
-        /*
-         * The ProgressBar that will indicate to the user that we are loading data. It will be
-         * hidden when no data is loading.
-         *
-         * Please note: This so called "ProgressBar" isn't a bar by default. It is more of a
-         * circle. We didn't make the rules (or the names of Views), we just follow them.
-         */
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        insertFakeData(this)
 
         /*
          * A LinearLayoutManager is responsible for measuring and positioning item views within a
@@ -118,17 +92,16 @@ public class MainActivity extends AppCompatActivity implements
          * layout. Generally, this is only true with horizontal lists that need to support a
          * right-to-left layout.
          */
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
-        mRecyclerView.setLayoutManager(layoutManager);
+        recyclerview_forecast.layoutManager = layoutManager
 
         /*
          * Use this setting to improve performance if you know that changes in content do not
          * change the child layout size in the RecyclerView
          */
-        mRecyclerView.setHasFixedSize(true);
+        recyclerview_forecast.setHasFixedSize(true)
 
         /*
          * The ForecastAdapter is responsible for linking our weather data with the Views that
@@ -140,21 +113,19 @@ public class MainActivity extends AppCompatActivity implements
          * MainActivity implements the ForecastAdapter ForecastOnClickHandler interface, "this"
          * is also an instance of that type of handler.
          */
-        mForecastAdapter = new ForecastAdapter(this, this);
+        mForecastAdapter = ForecastAdapter(this, this)
 
         /* Setting the adapter attaches it to the RecyclerView in our layout. */
-        mRecyclerView.setAdapter(mForecastAdapter);
+        recyclerview_forecast.adapter = mForecastAdapter
 
-
-        showLoading();
+        showLoading()
 
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
          * created and (if the activity/fragment is currently started) starts the loader. Otherwise
          * the last created loader is re-used.
          */
-        getSupportLoaderManager().initLoader(ID_FORECAST_LOADER, null, this);
-
+        supportLoaderManager.initLoader(ID_FORECAST_LOADER, Bundle.EMPTY, this)
     }
 
     /**
@@ -162,29 +133,30 @@ public class MainActivity extends AppCompatActivity implements
      * an implicit Intent. This super-handy Intent is detailed in the "Common Intents" page of
      * Android's developer site:
      *
-     * @see "http://developer.android.com/guide/components/intents-common.html#Maps"
-     * <p>
+     * @see "http://developer.android.com/guide/components/intents-common.html.Maps"
+     *
+     *
      * Protip: Hold Command on Mac or Control on Windows and click that link to automagically
      * open the Common Intents page
      */
-    private void openPreferredLocationInMap() {
-        double[] coords = SunshinePreferences.getLocationCoordinates(this);
-        String posLat = Double.toString(coords[0]);
-        String posLong = Double.toString(coords[1]);
-        Uri geoLocation = Uri.parse("geo:" + posLat + "," + posLong);
+    private fun openPreferredLocationInMap() {
+        val coords = getLocationCoordinates(this)
+        val posLat = java.lang.Double.toString(coords[0])
+        val posLong = java.lang.Double.toString(coords[1])
+        val geoLocation = Uri.parse("geo:$posLat,$posLong")
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = geoLocation
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
         } else {
-            Log.d(TAG, "Couldn't call " + geoLocation.toString() + ", no receiving apps installed!");
+            Log.d(TAG, "Couldn't call " + geoLocation.toString() + ", no receiving apps installed!")
         }
     }
 
     /**
-     * Called by the {@link android.support.v4.app.LoaderManagerImpl} when a new Loader needs to be
+     * Called by the [android.support.v4.app.LoaderManagerImpl] when a new Loader needs to be
      * created. This Activity only uses one loader, so we don't necessarily NEED to check the
      * loaderId, but this is certainly best practice.
      *
@@ -192,33 +164,31 @@ public class MainActivity extends AppCompatActivity implements
      * @param bundle   Any arguments supplied by the caller
      * @return A new Loader instance that is ready to start loading.
      */
-    @Override
-    public Loader<Cursor> onCreateLoader(int loaderId, Bundle bundle) {
+    override fun onCreateLoader(loaderId: Int, bundle: Bundle): Loader<Cursor> {
 
 
-        switch (loaderId) {
+        when (loaderId) {
 
-            case ID_FORECAST_LOADER:
+            ID_FORECAST_LOADER -> {
                 /* URI for all rows of weather data in our weather table */
-                Uri forecastQueryUri = WeatherContract.WeatherEntry.CONTENT_URI;
+                val forecastQueryUri = WeatherContract.CONTENT_URI
                 /* Sort order: Ascending by date */
-                String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+                val sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC"
                 /*
                  * A SELECTION in SQL declares which rows you'd like to return. In our case, we
                  * want all weather data from today onwards that is stored in our weather table.
                  * We created a handy method to do that in our WeatherEntry class.
                  */
-                String selection = WeatherContract.WeatherEntry.getSqlSelectForTodayOnwards();
+                val selection = WeatherContract.sqlSelectForTodayOnwards
 
-                return new CursorLoader(this,
+                return CursorLoader(this,
                         forecastQueryUri,
                         MAIN_FORECAST_PROJECTION,
-                        selection,
-                        null,
-                        sortOrder);
+                        selection, null,
+                        sortOrder)
+            }
 
-            default:
-                throw new RuntimeException("Loader Not Implemented: " + loaderId);
+            else -> throw RuntimeException("Loader Not Implemented: " + loaderId)
         }
     }
 
@@ -233,14 +203,13 @@ public class MainActivity extends AppCompatActivity implements
      * @param loader The Loader that has finished.
      * @param data   The data generated by the Loader.
      */
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
 
 
-        mForecastAdapter.swapCursor(data);
-        if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
-        mRecyclerView.smoothScrollToPosition(mPosition);
-        if (data.getCount() != 0) showWeatherDataView();
+        mForecastAdapter.swapCursor(data)
+        if (mPosition == RecyclerView.NO_POSITION) mPosition = 0
+        recyclerview_forecast.smoothScrollToPosition(mPosition)
+        if (data.count != 0) showWeatherDataView()
     }
 
     /**
@@ -249,13 +218,12 @@ public class MainActivity extends AppCompatActivity implements
      *
      * @param loader The Loader that is being reset.
      */
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    override fun onLoaderReset(loader: Loader<Cursor>) {
         /*
          * Since this Loader's data is now invalid, we need to clear the Adapter that is
          * displaying the data.
          */
-        mForecastAdapter.swapCursor(null);
+        mForecastAdapter.swapCursor(null!!)
     }
 
     //  TODO (38) Refactor onClick to accept a long instead of a String as its parameter
@@ -264,42 +232,43 @@ public class MainActivity extends AppCompatActivity implements
      *
      * @param weatherForDay String describing weather details for a particular day
      */
-    @Override
-    public void onClick(String weatherForDay) {
-//      TODO (39) Refactor onClick to build a URI for the clicked date and and pass it with the Intent using setData
-        Context context = this;
-        Class destinationClass = DetailActivity.class;
-        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, weatherForDay);
-        startActivity(intentToStartDetailActivity);
+    override fun onClick(weatherForDay: String) {
+        //      TODO (39) Refactor onClick to build a URI for the clicked date and and pass it with the Intent using setData
+        val context = this
+        val destinationClass = DetailActivity::class.java
+        val intentToStartDetailActivity = Intent(context, destinationClass)
+        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, weatherForDay)
+        startActivity(intentToStartDetailActivity)
     }
 
     /**
      * This method will make the View for the weather data visible and hide the error message and
      * loading indicator.
-     * <p>
+     *
+     *
      * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
      * each view is currently visible or invisible.
      */
-    private void showWeatherDataView() {
+    private fun showWeatherDataView() {
         /* First, hide the loading indicator */
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        pb_loading_indicator.visibility = View.INVISIBLE
         /* Finally, make sure the weather data is visible */
-        mRecyclerView.setVisibility(View.VISIBLE);
+        recyclerview_forecast.visibility = View.VISIBLE
     }
 
     /**
      * This method will make the loading indicator visible and hide the weather View and error
      * message.
-     * <p>
+     *
+     *
      * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
      * each view is currently visible or invisible.
      */
-    private void showLoading() {
+    private fun showLoading() {
         /* Then, hide the weather data */
-        mRecyclerView.setVisibility(View.INVISIBLE);
+        recyclerview_forecast.visibility = View.INVISIBLE
         /* Finally, show the loading indicator */
-        mLoadingIndicator.setVisibility(View.VISIBLE);
+        pb_loading_indicator.visibility = View.VISIBLE
     }
 
     /**
@@ -308,19 +277,17 @@ public class MainActivity extends AppCompatActivity implements
      * @param menu The options menu in which you place your items.
      *
      * @return You must return true for the menu to be displayed;
-     *         if you return false it will not be shown.
+     * if you return false it will not be shown.
      *
-     * @see #onPrepareOptionsMenu
-     * @see #onOptionsItemSelected
+     * @see .onPrepareOptionsMenu
+     *
+     * @see .onOptionsItemSelected
      */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        /* Use AppCompatActivity's method getMenuInflater to get a handle on the menu inflater */
-        MenuInflater inflater = getMenuInflater();
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         /* Use the inflater's inflate method to inflate our menu layout to this menu */
-        inflater.inflate(R.menu.forecast, menu);
+        menuInflater.inflate(R.menu.forecast, menu)
         /* Return true so that the menu is displayed in the Toolbar */
-        return true;
+        return true
     }
 
     /**
@@ -330,20 +297,19 @@ public class MainActivity extends AppCompatActivity implements
      *
      * @return true if you handle the menu click here, false otherwise
      */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        int id = item.getItemId();
+        val id = item.itemId
 
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
+            startActivity(Intent(this, SettingsActivity::class.java))
+            return true
         }
         if (id == R.id.action_map) {
-            openPreferredLocationInMap();
-            return true;
+            openPreferredLocationInMap()
+            return true
         }
 
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 }

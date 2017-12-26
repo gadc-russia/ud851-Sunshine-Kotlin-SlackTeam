@@ -122,7 +122,7 @@ public class TestWeatherProvider {
             /* The ProviderInfo will contain the authority, which is what we want to test */
             ProviderInfo providerInfo = pm.getProviderInfo(componentName, 0);
             String actualAuthority = providerInfo.authority;
-            String expectedAuthority = WeatherContract.CONTENT_AUTHORITY;
+            String expectedAuthority = WeatherContract.Companion.getCONTENT_AUTHORITY();
 
             /* Make sure that the registered authority matches the authority from the Contract */
             String incorrectAuthority =
@@ -191,7 +191,7 @@ public class TestWeatherProvider {
          * step.
          */
         Cursor weatherCursor = mContext.getContentResolver().query(
-                WeatherContract.WeatherEntry.CONTENT_URI,
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
@@ -251,7 +251,7 @@ public class TestWeatherProvider {
         /* Register a content observer to be notified of changes to data at a given URI (weather) */
         contentResolver.registerContentObserver(
                 /* URI that we would like to observe changes to */
-                WeatherContract.WeatherEntry.CONTENT_URI,
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Whether or not to notify us if descendants of this URI change */
                 true,
                 /* The observer to register (that will receive notifyChange callbacks) */
@@ -260,7 +260,7 @@ public class TestWeatherProvider {
         /* bulkInsert will return the number of records that were inserted. */
         int insertCount = contentResolver.bulkInsert(
                 /* URI at which to insert data */
-                WeatherContract.WeatherEntry.CONTENT_URI,
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Array of values to insert into given URI */
                 bulkInsertTestContentValues);
 
@@ -293,7 +293,7 @@ public class TestWeatherProvider {
          * step.
          */
         Cursor cursor = mContext.getContentResolver().query(
-                WeatherContract.WeatherEntry.CONTENT_URI,
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
@@ -370,7 +370,7 @@ public class TestWeatherProvider {
         /* Register a content observer to be notified of changes to data at a given URI (weather) */
         contentResolver.registerContentObserver(
                 /* URI that we would like to observe changes to */
-                WeatherContract.WeatherEntry.CONTENT_URI,
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Whether or not to notify us if descendants of this URI change */
                 true,
                 /* The observer to register (that will receive notifyChange callbacks) */
@@ -378,7 +378,7 @@ public class TestWeatherProvider {
 
         /* Delete all of the rows of data from the weather table */
         contentResolver.delete(
-                WeatherContract.WeatherEntry.CONTENT_URI,
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
@@ -386,7 +386,7 @@ public class TestWeatherProvider {
 
         /* Perform a query of the data that we've just deleted. This should be empty. */
         Cursor shouldBeEmptyCursor = contentResolver.query(
-                WeatherContract.WeatherEntry.CONTENT_URI,
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
