@@ -20,9 +20,7 @@ import android.text.format.DateUtils
 import com.example.android.sunshine.data.WeatherContract
 import com.example.android.sunshine.data.areNotificationsEnabled
 import com.example.android.sunshine.data.getEllapsedTimeSinceLastNotification
-import com.example.android.sunshine.utilities.NetworkUtils
-import com.example.android.sunshine.utilities.NotificationUtils
-import com.example.android.sunshine.utilities.OpenWeatherJsonUtils
+import com.example.android.sunshine.utilities.*
 
 
 /**
@@ -42,14 +40,13 @@ fun syncWeather(context: Context) {
          * weather. It will decide whether to create a URL based off of the latitude and
          * longitude or off of a simple location as a String.
          */
-        val weatherRequestUrl = NetworkUtils.getUrl(context)
+        val weatherRequestUrl = getUrl(context)
 
         /* Use the URL to retrieve the JSON */
-        val jsonWeatherResponse = NetworkUtils.getResponseFromHttpUrl(weatherRequestUrl)
+        val jsonWeatherResponse = getResponseFromHttpUrl(weatherRequestUrl)
 
         /* Parse the JSON into a list of weather values */
-        val weatherValues = OpenWeatherJsonUtils
-                .getWeatherContentValuesFromJson(context, jsonWeatherResponse)
+        val weatherValues = getWeatherContentValuesFromJson(context, jsonWeatherResponse)
 
         /*
          * In cases where our JSON contained an error code, getWeatherContentValuesFromJson
@@ -93,7 +90,7 @@ fun syncWeather(context: Context) {
              * haven't shown a notification in the past day.
              */
             if (notificationsEnabled && oneDayPassedSinceLastNotification) {
-                NotificationUtils.notifyUserOfNewWeather(context)
+                notifyUserOfNewWeather(context)
             }
 
             /* If the code reaches this point, we have successfully performed our sync */

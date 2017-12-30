@@ -142,12 +142,12 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         switch (viewType) {
 
             case VIEW_TYPE_TODAY:
-                weatherImageId = SunshineWeatherUtils
+                weatherImageId = SunshineWeatherUtils.INSTANCE
                         .getLargeArtResourceIdForWeatherCondition(weatherId);
                 break;
 
             case VIEW_TYPE_FUTURE_DAY:
-                weatherImageId = SunshineWeatherUtils
+                weatherImageId = SunshineWeatherUtils.INSTANCE
                         .getSmallArtResourceIdForWeatherCondition(weatherId);
                 break;
 
@@ -163,7 +163,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
          /* Read date from the cursor */
         long dateInMillis = mCursor.getLong(MainActivity.INDEX_WEATHER_DATE);
          /* Get human readable string using our utility method */
-        String dateString = SunshineDateUtils.getFriendlyDateString(mContext, dateInMillis, false);
+        String dateString = SunshineDateUtils.INSTANCE.getFriendlyDateString(mContext, dateInMillis, false);
 
          /* Display friendly date string */
         forecastAdapterViewHolder.dateView.setText(dateString);
@@ -171,7 +171,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         /***********************
          * Weather Description *
          ***********************/
-        String description = SunshineWeatherUtils.getStringForWeatherCondition(mContext, weatherId);
+        String description = SunshineWeatherUtils.INSTANCE.getStringForWeatherCondition(mContext, weatherId);
          /* Create the accessibility (a11y) String from the weather description */
         String descriptionA11y = mContext.getString(R.string.a11y_forecast, description);
 
@@ -189,7 +189,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
           * the temperature. This method will also append either °C or °F to the temperature
           * String.
           */
-        String highString = SunshineWeatherUtils.formatTemperature(mContext, highInCelsius);
+        String highString = SunshineWeatherUtils.INSTANCE.formatTemperature(mContext, highInCelsius);
          /* Create the accessibility (a11y) String from the weather description */
         String highA11y = mContext.getString(R.string.a11y_high_temp, highString);
 
@@ -207,7 +207,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
           * the temperature. This method will also append either °C or °F to the temperature
           * String.
           */
-        String lowString = SunshineWeatherUtils.formatTemperature(mContext, lowInCelsius);
+        String lowString = SunshineWeatherUtils.INSTANCE.formatTemperature(mContext, lowInCelsius);
         String lowA11y = mContext.getString(R.string.a11y_low_temp, lowString);
 
          /* Set the text and content description (for accessibility purposes) */
