@@ -122,7 +122,7 @@ public class TestWeatherProvider {
             /* The ProviderInfo will contain the authority, which is what we want to test */
             ProviderInfo providerInfo = pm.getProviderInfo(componentName, 0);
             String actualAuthority = providerInfo.authority;
-            String expectedAuthority = WeatherContract.CONTENT_AUTHORITY;
+            String expectedAuthority = WeatherContract.Companion.getCONTENT_AUTHORITY();
 
             /* Make sure that the registered authority matches the authority from the Contract */
             String incorrectAuthority =
@@ -174,7 +174,7 @@ public class TestWeatherProvider {
         /* Insert ContentValues into database and get a row ID back */
         long weatherRowId = database.insert(
                 /* Table to insert values into */
-                WeatherContract.WeatherEntry.Companion.getTABLE_NAME(),
+                WeatherContract.WeatherEntry.TABLE_NAME,
                 null,
                 /* Values to insert into table */
                 testWeatherValues);
@@ -191,7 +191,7 @@ public class TestWeatherProvider {
          * step.
          */
         Cursor weatherCursor = mContext.getContentResolver().query(
-                WeatherContract.WeatherEntry.Companion.getCONTENT_URI(),
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
@@ -251,7 +251,7 @@ public class TestWeatherProvider {
         /* Register a content observer to be notified of changes to data at a given URI (weather) */
         contentResolver.registerContentObserver(
                 /* URI that we would like to observe changes to */
-                WeatherContract.WeatherEntry.Companion.getCONTENT_URI(),
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Whether or not to notify us if descendants of this URI change */
                 true,
                 /* The observer to register (that will receive notifyChange callbacks) */
@@ -260,7 +260,7 @@ public class TestWeatherProvider {
         /* bulkInsert will return the number of records that were inserted. */
         int insertCount = contentResolver.bulkInsert(
                 /* URI at which to insert data */
-                WeatherContract.WeatherEntry.Companion.getCONTENT_URI(),
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Array of values to insert into given URI */
                 bulkInsertTestContentValues);
 
@@ -293,7 +293,7 @@ public class TestWeatherProvider {
          * step.
          */
         Cursor cursor = mContext.getContentResolver().query(
-                WeatherContract.WeatherEntry.Companion.getCONTENT_URI(),
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
@@ -301,7 +301,7 @@ public class TestWeatherProvider {
                 /* Values for "where" clause */
                 null,
                 /* Sort by date from smaller to larger (past to future) */
-                WeatherContract.WeatherEntry.Companion.getCOLUMN_DATE() + " ASC");
+                WeatherContract.WeatherEntry.COLUMN_DATE + " ASC");
 
         /*
          * Although we already tested the number of records that the ContentProvider reported
@@ -370,7 +370,7 @@ public class TestWeatherProvider {
         /* Register a content observer to be notified of changes to data at a given URI (weather) */
         contentResolver.registerContentObserver(
                 /* URI that we would like to observe changes to */
-                WeatherContract.WeatherEntry.Companion.getCONTENT_URI(),
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Whether or not to notify us if descendants of this URI change */
                 true,
                 /* The observer to register (that will receive notifyChange callbacks) */
@@ -378,7 +378,7 @@ public class TestWeatherProvider {
 
         /* Delete all of the rows of data from the weather table */
         contentResolver.delete(
-                WeatherContract.WeatherEntry.Companion.getCONTENT_URI(),
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
@@ -386,7 +386,7 @@ public class TestWeatherProvider {
 
         /* Perform a query of the data that we've just deleted. This should be empty. */
         Cursor shouldBeEmptyCursor = contentResolver.query(
-                WeatherContract.WeatherEntry.Companion.getCONTENT_URI(),
+                WeatherContract.Companion.getCONTENT_URI(),
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
@@ -441,7 +441,7 @@ public class TestWeatherProvider {
         SQLiteDatabase database = helper.getWritableDatabase();
 
         /* The delete method deletes all of the desired rows from the table, not the table itself */
-        database.delete(WeatherContract.WeatherEntry.Companion.getTABLE_NAME(), null, null);
+        database.delete(WeatherContract.WeatherEntry.TABLE_NAME, null, null);
 
         /* Always close the database when you're through with it */
         database.close();

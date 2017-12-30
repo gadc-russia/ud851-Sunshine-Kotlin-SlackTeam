@@ -21,7 +21,7 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import com.example.android.sunshine.utilities.SunshineDateUtils.isDateNormalized
+import com.example.android.sunshine.utilities.isDateNormalized
 
 /**
  * This class serves as the ContentProvider for all of Sunshine's data. This class allows us to
@@ -99,14 +99,11 @@ class WeatherProvider : ContentProvider() {
                 } finally {
                     db.endTransaction()
                 }
-
                 if (rowsInserted > 0) {
                     context.contentResolver.notifyChange(uri, null)
                 }
-
                 return rowsInserted
             }
-
             else -> return super.bulkInsert(uri, values)
         }
     }

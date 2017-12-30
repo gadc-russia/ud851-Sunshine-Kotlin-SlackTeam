@@ -16,7 +16,6 @@
 package com.example.android.sunshine.sync
 
 import android.os.AsyncTask
-import com.example.android.sunshine.sync.SunshineSyncTask.syncWeather
 import com.firebase.jobdispatcher.Job
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService

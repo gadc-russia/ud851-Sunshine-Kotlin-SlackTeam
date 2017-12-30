@@ -20,10 +20,10 @@ import android.text.format.DateUtils
 import com.example.android.sunshine.data.WeatherContract
 import com.example.android.sunshine.data.areNotificationsEnabled
 import com.example.android.sunshine.data.getEllapsedTimeSinceLastNotification
-import com.example.android.sunshine.utilities.NetworkUtils.getResponseFromHttpUrl
-import com.example.android.sunshine.utilities.NetworkUtils.getUrl
-import com.example.android.sunshine.utilities.NotificationUtils.notifyUserOfNewWeather
-import com.example.android.sunshine.utilities.OpenWeatherJsonUtils.getWeatherContentValuesFromJson
+import com.example.android.sunshine.utilities.getResponseFromHttpUrl
+import com.example.android.sunshine.utilities.getUrl
+import com.example.android.sunshine.utilities.getWeatherContentValuesFromJson
+import com.example.android.sunshine.utilities.notifyUserOfNewWeather
 
 /**
  * Performs the network request for updated weather, parses the JSON from that request, and

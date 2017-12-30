@@ -149,11 +149,11 @@ class TestUtilities {
         ContentValues[] bulkTestWeatherValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
 
         long testDate = TestUtilities.DATE_NORMALIZED;
-        long normalizedTestDate = SunshineDateUtils.normalizeDate(testDate);
+        long normalizedTestDate = SunshineDateUtils.INSTANCE.normalizeDate(testDate);
 
         for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++) {
 
-            normalizedTestDate += SunshineDateUtils.DAY_IN_MILLIS;
+            normalizedTestDate += SunshineDateUtils.INSTANCE.getDAY_IN_MILLIS();
 
             ContentValues weatherValues = new ContentValues();
 
