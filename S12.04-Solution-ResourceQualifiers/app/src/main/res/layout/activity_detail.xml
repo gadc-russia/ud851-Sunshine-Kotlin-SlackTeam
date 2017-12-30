@@ -26,34 +26,32 @@
   - Note that this is the PORTRAIT version of the layout.                                        -
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      - To efficiently re-use complete layouts, you can use the <include/> tags to embed     -
+      - another complete layout inside the current layout. In Sunshine, this allows us to    -
+      - conveniently create layouts for both the portrait and landscape layouts for the      -
+      - DetailActivity. If we hadn't have used <include/> tags, we would have duplicated     -
+      - layout code all over the place, and any changes we wanted to make, we'd have to make -
+      - twice.                                                                               -
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <include
+        android:id="@+id/primary_info"
+        layout="@layout/primary_weather_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          - To efficiently re-use complete layouts, you can use the <include/> tags to embed     -
-          - another complete layout inside the current layout. In Sunshine, this allows us to    -
-          - conveniently create layouts for both the portrait and landscape layouts for the      -
-          - DetailActivity. If we hadn't have used <include/> tags, we would have duplicated     -
-          - layout code all over the place, and any changes we wanted to make, we'd have to make -
-          - twice.                                                                               -
-          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-        <include
-            android:id="@+id/primary_info"
-            layout="@layout/primary_weather_info"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <include
+        android:id="@+id/extra_details"
+        layout="@layout/extra_weather_details"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-        <include
-            android:id="@+id/extra_details"
-            layout="@layout/extra_weather_details"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-</layout>
+</LinearLayout>
