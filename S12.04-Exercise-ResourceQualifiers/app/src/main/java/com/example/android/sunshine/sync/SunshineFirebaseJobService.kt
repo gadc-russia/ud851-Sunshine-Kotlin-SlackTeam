@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.sync;
+package com.example.android.sunshine.sync
 
-import android.content.Context;
-import android.os.AsyncTask;
-
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.JobParameters;
-import com.firebase.jobdispatcher.JobService;
-import com.firebase.jobdispatcher.RetryStrategy;
+import android.os.AsyncTask
+import com.firebase.jobdispatcher.Job
+import com.firebase.jobdispatcher.JobParameters
+import com.firebase.jobdispatcher.JobService
+import com.firebase.jobdispatcher.RetryStrategy
 
 
-public class SunshineFirebaseJobService extends JobService {
+class SunshineFirebaseJobService : JobService() {
 
-    private AsyncTask<Void, Void, Void> mFetchWeatherTask;
+    private var mFetchWeatherTask: AsyncTask<Void, Void, Void>? = null
 
     /**
      * The entry point to your Job. Implementations should offload work to another thread of
@@ -38,26 +36,23 @@ public class SunshineFirebaseJobService extends JobService {
      *
      * @return whether there is more work remaining.
      */
-    @Override
-    public boolean onStartJob(final JobParameters jobParameters) {
+    override fun onStartJob(jobParameters: JobParameters): Boolean {
 
-        mFetchWeatherTask = new AsyncTask<Void, Void, Void>(){
-            @Override
-            protected Void doInBackground(Void... voids) {
-                Context context = getApplicationContext();
-                SunshineSyncTask.syncWeather(context);
-                jobFinished(jobParameters, false);
-                return null;
+        mFetchWeatherTask = object : AsyncTask<Void, Void, Void>() {
+            override fun doInBackground(vararg voids: Void): Void? {
+                val context = applicationContext
+                syncWeather(context)
+                jobFinished(jobParameters, false)
+                return null
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                jobFinished(jobParameters, false);
+            override fun onPostExecute(aVoid: Void) {
+                jobFinished(jobParameters, false)
             }
-        };
+        }
 
-        mFetchWeatherTask.execute();
-        return true;
+        mFetchWeatherTask!!.execute()
+        return true
     }
 
     /**
@@ -65,14 +60,13 @@ public class SunshineFirebaseJobService extends JobService {
      * most likely because the runtime constraints associated with the job are no longer satisfied.
      *
      * @return whether the job should be retried
-     * @see Job.Builder#setRetryStrategy(RetryStrategy)
+     * @see Job.Builder.setRetryStrategy
      * @see RetryStrategy
      */
-    @Override
-    public boolean onStopJob(JobParameters jobParameters) {
+    override fun onStopJob(jobParameters: JobParameters): Boolean {
         if (mFetchWeatherTask != null) {
-            mFetchWeatherTask.cancel(true);
+            mFetchWeatherTask!!.cancel(true)
         }
-        return true;
+        return true
     }
 }
