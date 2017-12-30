@@ -134,7 +134,7 @@ public class NotificationUtils {
              * Since we just showed a notification, save the current time. That way, we can check
              * next time the weather is refreshed if we should show another notification.
              */
-            SunshinePreferences.saveLastNotificationTime(context, System.currentTimeMillis());
+            SunshinePreferences.INSTANCE.saveLastNotificationTime(context, System.currentTimeMillis());
         }
 
         /* Always close your cursor when you're done with it to avoid wasting resources. */
