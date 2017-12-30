@@ -103,7 +103,7 @@ public final class OpenWeatherJsonUtils {
         double cityLatitude = cityCoord.getDouble(OWM_LATITUDE);
         double cityLongitude = cityCoord.getDouble(OWM_LONGITUDE);
 
-        SunshinePreferences.setLocationDetails(context, cityLatitude, cityLongitude);
+        SunshinePreferences.INSTANCE.setLocationDetails(context, cityLatitude, cityLongitude);
 
         ContentValues[] weatherContentValues = new ContentValues[jsonWeatherArray.length()];
 

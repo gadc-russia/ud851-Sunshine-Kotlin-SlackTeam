@@ -98,13 +98,13 @@ public final class NetworkUtils {
      * @return URL to query weather service
      */
     public static URL getUrl(Context context) {
-        if (SunshinePreferences.isLocationLatLonAvailable(context)) {
-            double[] preferredCoordinates = SunshinePreferences.getLocationCoordinates(context);
+        if (SunshinePreferences.INSTANCE.isLocationLatLonAvailable(context)) {
+            double[] preferredCoordinates = SunshinePreferences.INSTANCE.getLocationCoordinates(context);
             double latitude = preferredCoordinates[0];
             double longitude = preferredCoordinates[1];
             return buildUrlWithLatitudeLongitude(latitude, longitude);
         } else {
-            String locationQuery = SunshinePreferences.getPreferredWeatherLocation(context);
+            String locationQuery = SunshinePreferences.INSTANCE.getPreferredWeatherLocation(context);
             return buildUrlWithLocationQuery(locationQuery);
         }
     }

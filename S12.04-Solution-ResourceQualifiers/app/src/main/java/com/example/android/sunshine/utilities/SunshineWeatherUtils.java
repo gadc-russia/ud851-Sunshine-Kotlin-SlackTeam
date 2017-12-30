@@ -55,7 +55,7 @@ public final class SunshineWeatherUtils {
      * "21°"
      */
     public static String formatTemperature(Context context, double temperature) {
-        if (!SunshinePreferences.isMetric(context)) {
+        if (!SunshinePreferences.INSTANCE.isMetric(context)) {
             temperature = celsiusToFahrenheit(temperature);
         }
 
@@ -100,7 +100,7 @@ public final class SunshineWeatherUtils {
     public static String getFormattedWind(Context context, float windSpeed, float degrees) {
         int windFormat = R.string.format_wind_kmh;
 
-        if (!SunshinePreferences.isMetric(context)) {
+        if (!SunshinePreferences.INSTANCE.isMetric(context)) {
             windFormat = R.string.format_wind_mph;
             windSpeed = .621371192237334f * windSpeed;
         }
